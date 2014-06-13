@@ -12,12 +12,18 @@ Example Configuration:
 
     port: 8081
     bind: 127.0.0.1
-    openstack:
-      :username: admin
-      :tenant: admin
-      :api_key: mypassword
-      :auth_url: http://horizon.domain.com:5000/v2.0/tokens 
-
+    default_stack: qa
+    stacks:
+      qa:
+        username: admin
+        tenant: admin
+        api_key: mypassword
+        auth_url: http://horizon.domain.com:5000/v2.0/tokens 
+      prod:
+        username: admin
+        tenant: admin
+        api_key: mypassword
+        auth_url: http://horizon.domain.com:5000/v2.0/tokens 
 
 ----------
 
