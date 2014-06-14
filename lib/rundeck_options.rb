@@ -11,8 +11,10 @@ module RundeckOptions
       @stacks = validate_config
     end
 
-    get '/computes' do 
-      render_list stack.computes
+    [ :flavors, :floats, :floats_free, :networks, :images, :keypairs, :computes ].each do|m|
+      get "/#{m}" do 
+        render_list stack.send m if stack.respond_to m
+      end
     end
 
     get '/domains' do
@@ -26,18 +28,6 @@ module RundeckOptions
       render_list domains.keys
     end
 
-    get '/flavors' do 
-      render_list stack.flavors
-    end
-
-    get '/floats' do 
-      render_list stack.floats
-    end
-
-    get '/free' do 
-      render_list stack.floats_free
-    end
-    
     get '/hostnames' do
       domain = '\.' << ( params["domain"] || '.*' )
       render_list stack.servers.select { |name|
@@ -45,18 +35,6 @@ module RundeckOptions
       }.map { |name|
         name.split('.').first
       }
-    end
-
-    get '/images' do 
-      render_list stack.images.map
-    end
-
-    get '/networks' do 
-      render_list stack.networks
-    end  
-
-    get '/keypairs' do 
-      render_list stack.keypairs
     end
 
     get '/servers' do
