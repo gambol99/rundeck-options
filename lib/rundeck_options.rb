@@ -46,7 +46,7 @@ module RundeckOptions
     end
 
     get '/stacks' do 
-      render_list @stacks.keys
+      render_list @stacks.keys.reject { |x| x if x == :default }
     end
 
     private 
