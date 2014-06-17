@@ -40,9 +40,6 @@ module RundeckOptions
 
     get '/servers' do
       domain = '[\.]?' << ( params["domain"] || '.*' )
-      puts "SERVERS:"
-      puts "domain: #{domain}"
-      PP.pp stack.servers
       render_list stack.servers.select { |name|
         name if name =~ /#{domain}$/
       }
@@ -76,8 +73,6 @@ module RundeckOptions
     end
 
     def render_list list = []
-      puts "LIST"
-      PP.pp list
       content_type :json
       list.map { |item|
         { :name => item, :value => item }  
