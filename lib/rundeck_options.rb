@@ -1,5 +1,6 @@
 require "settings"
 require "openstack-build"
+require 'pp'
 
 module RundeckOptions
   class Application < Sinatra::Base
@@ -13,7 +14,7 @@ module RundeckOptions
 
     [ :flavors, :floats, :floats_free, :networks, :images, :keypairs, :computes ].each do|m|
       get "/#{m}" do 
-        render_list stack.send m if stack.respond_to m
+        render_list stack.send m if stack.respond_to? m
       end
     end
 
@@ -38,7 +39,10 @@ module RundeckOptions
     end
 
     get '/servers' do
-      domain = '\.' << ( params["domain"] || '.*' )
+      domain = '[\.]?' << ( params["domain"] || '.*' )
+      puts "SERVERS:"
+      puts "domain: #{domain}"
+      PP.pp stack.servers
       render_list stack.servers.select { |name|
         name if name =~ /#{domain}$/
       }
@@ -50,10 +54,11 @@ module RundeckOptions
 
     private 
     def stack name = params['stack']
+      # step: set to the default stack if no param is set
       name = :default if name.nil?
       halt 500, "the stack: #{name} is invalid, please check"         unless name =~ /^[[:alnum:]_]+$/ 
-      halt 500, "we have not openstack cluster defined"               if @stacks.empty?
-      halt 500, "the stack: #{name} does not exist in configuration"  unless @stacks[name].nil?
+      halt 500, "we have no openstack cluster defined in config"      if @stacks.empty?
+      halt 500, "the stack: #{name} does not exist in configuration"  if @stacks[name].nil?
       @stacks[name]
     end
 
@@ -62,18 +67,20 @@ module RundeckOptions
       ( Settings['stacks'] || {} ).keys.each do |stack|
         # step: skip unless we have everything we need
         next unless Settings['stacks'][stack].is_a? Hash
-        next unless %w(username tenant api_key auth_url).all { |x| true if Settings['stacks'][stack].has_key? x }
-        stacks[name] = OpenstackBuild.new(Settings['stacks'][stack])
+        next unless %w(username tenant api_key auth_url).all? { |x| true if Settings['stacks'][stack].has_key? x }
+        stacks[stack] = OpenstackBuild.new(Settings['stacks'][stack])
       end
       default_stack    = Settings['default_stack']
-      stacks[:default] = ( default_stack and stacks[default_stack] ) ? Settings[default_stack] : stacks.keys.first 
+      stacks[:default] = ( default_stack and stacks[default_stack] ) ? stacks[default_stack] : stacks[stacks.keys.first]
       stacks
     end
 
     def render_list list = []
+      puts "LIST"
+      PP.pp list
       content_type :json
       list.map { |item|
-        { :name => name, :value => name }  
+        { :name => item, :value => item }  
       }.to_json
     end
   end
