@@ -45,8 +45,8 @@ module RundeckOptions
 
       def openstack
         unless @openstack
-          @openstack[:compute] = ::Fog::Compute.new( configuration )
-          @openstack[:network] = ::Fog::Network.new( configuration )
+          @openstack[:compute] = ::Fog::Compute.new( @configuration )
+          @openstack[:network] = ::Fog::Network.new( @configuration )
         end
         @openstack
       end

@@ -41,7 +41,7 @@ module RundeckOptions
 
       def rackspace
         unless @rackspace
-          @rackspace[:compute] = ::Fog::Compute.new( configuration )
+          @rackspace[:compute] = ::Fog::Compute.new( @configuration )
         end
         @rackspace
       end

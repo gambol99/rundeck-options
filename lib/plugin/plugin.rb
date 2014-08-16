@@ -12,7 +12,6 @@ module RundeckOptions
           raise ArgumentError, "the methods: #{m} has not been implemented by the plugin: #{self.class}"
         end
       end
-
       include AbstractMethods
     end
   end

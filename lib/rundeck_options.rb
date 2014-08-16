@@ -6,7 +6,7 @@ module RundeckOptions
     include RundeckOptions::Plugins
 
     enable :logging, :static, :raise_errors
-    disable :dump_errors, :show_exceptions
+    #disable :dump_errors, :show_exceptions
     set :port, Settings[:port] || 8080
     set :bind, Settings[:bind] || '0.0.0.0'
 
