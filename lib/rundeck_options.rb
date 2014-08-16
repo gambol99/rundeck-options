@@ -5,12 +5,14 @@ module RundeckOptions
   class Application < Sinatra::Base
     include RundeckOptions::Plugins
 
+    enable :logging, :static, :raise_errors
+    disable :dump_errors, :show_exceptions
     set :port, Settings[:port] || 8080
     set :bind, Settings[:bind] || '0.0.0.0'
 
     def initialize
       super
-      cloud_stacks
+      load_plugins
     end
 
     [ :flavors, :floats, :floats_free, :networks, :images, :keypairs, :computes ].each do|m|
@@ -55,14 +57,14 @@ module RundeckOptions
       # step: set to the default stack if no param is set
       name = :default if name.nil?
       halt 500, "the stack: #{name} is invalid, please check"         unless name =~ /^[[:alnum:]_]+$/
-      halt 500, "we have no openstack cluster defined in config"      if @stacks.empty?
+      halt 500, "we have no cloud configuration defined in config"    if @stacks.empty?
       halt 500, "the stack: #{name} does not exist in configuration"  if @stacks[name].nil?
       @stacks[name]
     end
 
-    def cloud_stacks
+    def load_plugins
       @stacks ||= {}
-      ( RundeckOptions::Settings['stacks'] || {} ).keys.each_pair do |cloud,config|
+      ( RundeckOptions::Settings['stacks'] || {} ).each_pair do |cloud,config|
         # step: we must have a provider
         raise ArgumentError, "the cloud configuration for: #{name} does not have a provider" unless config['provider']
         raise ArgumentError, "the cloud provider: #{config['provider']} is not supported at present" unless plugin? config['provider']
