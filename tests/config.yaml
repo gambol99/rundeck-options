@@ -1,0 +1,18 @@
+#
+#   Author: Rohith
+#   Date: 2014-08-16 15:23:35 +0100 (Sat, 16 Aug 2014)
+#
+#  vim:ts=4:sw=4:et
+#
+clouds:
+  staging:
+    provider: Openstack
+    username: admin
+    tenant: admin
+    api_key: password
+    auth_url: http://horizon.domain.com:5000/v2.0/tokens
+  rpc:
+    provider: Rackspace
+    username: admin
+    api_key: password
+    regions: :lon
