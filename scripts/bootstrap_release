@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+#   Author: Rohith
+#   Date: 2014-08-16 17:18:44 +0100 (Sat, 16 Aug 2014)
+#
+#  vim:ts=4:sw=4:et
+#
+
+errors=0
+RUBY_VERSION="2.1"
+RUBY_BASE="/opt/ruby-$RUBY_VERSION"
+RUBY="$RUBY_BASE/bin"
+
+export RAILS_ENV=${RAILS_ENV:-production}
+if [ -z $1 ]; then
+  release=$HOME/current
+else
+  release=$HOME/releases/$1
+fi
+shared=$HOME/shared
+
+function run {
+  $* > .bootstrap_output 2>&1
+  local retval=$?
+  if [ $retval -ne 0 ]; then
+    cat .bootstrap_output
+    errors=1
+  fi
+  return $retval
+}
+
+function symlink_shared_config {
+  local shared_config=$shared/config/$1
+  if [ -f $shared_config ]; then
+    run ln -nfs $shared_config $release/config
+  fi
+}
+
+function announce {
+  echo "$(date +%H:%M:%S): $*"
+}
+
+announce "Bootstrapping $release"
+cd $release
+
+announce "=> Symlink shared configuration files"
+symlink_shared_config config.yaml
+
+announce "=> Bundler install"
+run $RUBY/bundle install --path ./vendor/bundle
+
+if [ $errors -eq 0 ]; then
+  announce "=> Success"
+  touch .bootstrapped
+else
+  announce "=> Failed!"
+  exit $errors
+fi

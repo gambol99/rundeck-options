@@ -17,7 +17,7 @@ module RundeckOptions
 
     private
     def plugins
-      classes = RundeckOptions::Plugins.constants.select do |x|
+      RundeckOptions::Plugins.constants.select do |x|
         Class === RundeckOptions::Plugins.const_get( x )
       end
     end
