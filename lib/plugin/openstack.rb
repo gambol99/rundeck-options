@@ -48,6 +48,7 @@ module RundeckOptions
           @openstack[:compute] = ::Fog::Compute.new( configuration )
           @openstack[:network] = ::Fog::Network.new( configuration )
         end
+        @openstack
       end
     end
   end
