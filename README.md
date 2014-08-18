@@ -6,31 +6,38 @@ A small [http://rundeck.org/][1] integration piece; the sinatra app provides a s
 
 ----------
 
-Example Configuration: 
+Example Configuration:
 --------------
 ../config/settings.yml
 
     port: 8081
     bind: 127.0.0.1
     default_stack: qa
-    stacks:
+    clouds:
       qa:
-        username: admin
-        tenant: admin
-        api_key: mypassword
-        auth_url: http://horizon.domain.com:5000/v2.0/tokens 
-      prod:
-        username: admin
-        tenant: admin
-        api_key: mypassword
-        auth_url: http://horizon.domain.com:5000/v2.0/tokens 
+        provider: OpenStack
+        openstack_tenant: TENANT
+        openstack_username: USERNAME
+        openstack_api_key: PASSWORD
+        openstack_auth_url: http://horizon.qa.domain.com:5000/v2.0/tokens
+      stage:
+        provider: OpenStack
+        openstack_tenant: TENANT
+        openstack_username: USERNAME
+        openstack_api_key: PASSWORD
+        openstack_auth_url: http://horizon.stage.domain.com:5000/v2.0/tokens
+      rpc:
+        provider: Rackspace
+        rackspace_username: USERNAME
+        rackspace_api_key: TOKEN
+        rackspace_region: REGION
 
 ----------
 
 
 Rundeck Job Example
 -------------------
-  
+
       group: openstack
       options:
         compute:
