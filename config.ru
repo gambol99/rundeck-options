@@ -1,5 +1,4 @@
-# puts File.join(File.dirname(__FILE__),'/libs')
-$:.unshift File.join(File.dirname(__FILE__),'/lib')
+$:.unshift File.join(File.dirname(__FILE__),'./lib')
 
 require 'rack'
 require 'sinatra'
