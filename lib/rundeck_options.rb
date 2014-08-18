@@ -30,7 +30,7 @@ module RundeckOptions
     end
 
     get '/hostnames' do
-      domain = '\.' << ( params["domain"] || '.*' )
+      domain = '[\.]?' << ( params["domain"] || '.*' )
       render_list stack.servers.select { |name|
         name if name =~ /#{domain}$/
       }.map { |name|
