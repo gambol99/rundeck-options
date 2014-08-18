@@ -6,6 +6,7 @@
 #
 module RundeckOptions
   module Plugins
+    require 'plugin/plugin'
     require 'plugin/openstack'
     require 'plugin/rackspace'
 

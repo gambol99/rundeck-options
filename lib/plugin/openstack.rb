@@ -6,7 +6,7 @@
 #
 module RundeckOptions
   module Plugins
-    class Openstack < Plugin
+    class OpenStack < Plugin
       def initialize configuration
         @configuration = configuration
         @openstack = nil
@@ -18,7 +18,7 @@ module RundeckOptions
           end
         end
       end
-      include ComputeMethods
+      include OpenstackMethods
 
       def networks
         networks.network.networks.map { |x| x.name }
@@ -45,6 +45,10 @@ module RundeckOptions
 
       def openstack
         unless @openstack
+          @openstack = {}
+          @configuration.merge!( {
+            :provider => :OpenStack
+          })
           @openstack[:compute] = ::Fog::Compute.new( @configuration )
           @openstack[:network] = ::Fog::Network.new( @configuration )
         end

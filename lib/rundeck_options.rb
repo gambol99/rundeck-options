@@ -1,5 +1,7 @@
 require 'settings'
 require 'plugins'
+require 'json'
+require 'pp'
 
 module RundeckOptions
   class Application < Sinatra::Base
@@ -49,7 +51,7 @@ module RundeckOptions
     end
 
     get '/stacks' do
-      render_list @stacks.keys.reject { |x| x if x == :default }
+      render_list stacks.keys.reject { |x| x if x == :default }
     end
 
     private
@@ -57,23 +59,26 @@ module RundeckOptions
       # step: set to the default stack if no param is set
       name = :default if name.nil?
       halt 500, "the stack: #{name} is invalid, please check"         unless name =~ /^[[:alnum:]_]+$/
-      halt 500, "we have no cloud configuration defined in config"    if @stacks.empty?
-      halt 500, "the stack: #{name} does not exist in configuration"  if @stacks[name].nil?
-      @stacks[name]
+      halt 500, "we have no cloud configuration defined in config"    if stacks.empty?
+      halt 500, "the stack: #{name} does not exist in configuration"  if stacks[name].nil?
+      stacks[name]
     end
 
     def load_plugins
-      @stacks ||= {}
-      ( RundeckOptions::Settings['stacks'] || {} ).each_pair do |cloud,config|
+      ( RundeckOptions::Settings['clouds'] || {} ).each_pair do |cloud,config|
         # step: we must have a provider
         raise ArgumentError, "the cloud configuration for: #{name} does not have a provider" unless config['provider']
         raise ArgumentError, "the cloud provider: #{config['provider']} is not supported at present" unless plugin? config['provider']
         # step: create a plugin for this cloud
-        @stacks[cloud] = plugin( config )
+        stacks[cloud] = plugin config['provider'], config
       end
       default_stack  = Settings['default_stack']
-      @stacks[:default] = ( default_stack and @stacks[default_stack] ) ? @stacks[default_stack] : @stacks[@stacks.keys.first]
-      @stacks
+      stacks[:default] = ( default_stack and stacks[default_stack] ) ? stacks[default_stack] : stacks[stacks.keys.first]
+      stacks
+    end
+
+    def stacks
+      @stacks ||= {}
     end
 
     def render_list list = []

@@ -44,7 +44,7 @@ announce "Bootstrapping $release"
 cd $release
 
 announce "=> Symlink shared configuration files"
-symlink_shared_config config.yaml
+symlink_shared_config settings.yaml
 
 announce "=> Bundler install"
 run $RUBY/bundle install --path ./vendor/bundle

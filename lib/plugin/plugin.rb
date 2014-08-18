@@ -4,15 +4,10 @@
 #
 #  vim:ts=4:sw=4:et
 #
+require 'fog'
+
 module RundeckOptions
   module Plugins
-    class Plugin
-      module AbstractMethods
-        [ :servers, :domains, :hostnames, :flavors, :floats, :floats_free, :networks, :images, :keypairs, :computes ].each do|m|
-          raise ArgumentError, "the methods: #{m} has not been implemented by the plugin: #{self.class}"
-        end
-      end
-      include AbstractMethods
-    end
+    class Plugin; end
   end
 end

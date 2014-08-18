@@ -2,7 +2,7 @@ require "yaml"
 
 module RundeckOptions
   class Settings
-    CONFIG_FILE = File.join(File.dirname(__FILE__),'../config/settings.yml')
+    CONFIG_FILE = File.join(File.dirname(__FILE__),'../config/config.yaml')
 
     def self.settings
       @settings ||= YAML.load(File.read(CONFIG_FILE))
