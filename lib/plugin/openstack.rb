@@ -12,13 +12,17 @@ module RundeckOptions
         @openstack = nil
       end
       module OpenstackMethods
-        [:servers, :images, :flavors, :keypairs ].each do |x|
+        [:servers, :images, :flavors].each do |x|
           define_method x do
             compute.send( x ).map { |i| i.name }
           end
         end
       end
       include OpenstackMethods
+
+      def keypairs
+        compute.key_pairs.map { |x| x.name }
+      end
 
       def networks
         network.networks.map { |x| x.name }

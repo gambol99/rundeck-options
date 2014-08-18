@@ -12,7 +12,7 @@ module RundeckOptions
         @rackspace = nil
       end
       module RackspaceMethods
-        [:servers, :images, :flavors, :keypairs ].each do |x|
+        [:servers, :images, :flavors ].each do |x|
           define_method x do
             rackspace.send( x ).map { |i| i.name }
           end
@@ -26,6 +26,7 @@ module RundeckOptions
 
       alias_method :floats, :unsupported
       alias_method :floats_free, :unsupported
+      alias_method :keypairs, :unsupported
 
       private
       def rackspace
