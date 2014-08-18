@@ -6,7 +6,7 @@
 #
 module RundeckOptions
   module Plugins
-    class OpenStack < Plugin
+    class Openstack < Plugin
       def initialize configuration
         @configuration = configuration
         @openstack = nil
