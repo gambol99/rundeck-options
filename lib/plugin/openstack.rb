@@ -21,15 +21,15 @@ module RundeckOptions
       include OpenstackMethods
 
       def networks
-        networks.network.networks.map { |x| x.name }
+        network.networks.map { |x| x.name }
       end
 
       def floats
-        network.network.list_floating_ips.body['floatingips'].map { |float| float['floating_ip_address'] }
+        network.list_floating_ips.body['floatingips'].map { |float| float['floating_ip_address'] }
       end
 
       def floats_free
-        network.network.list_floating_ips.body['floatingips'].select { |float|
+        network.list_floating_ips.body['floatingips'].select { |float|
           float if float['port_id'].nil?
         }.map { |float| float['floating_ip_address'] }.sort
       end
@@ -57,3 +57,4 @@ module RundeckOptions
     end
   end
 end
+
