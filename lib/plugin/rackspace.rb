@@ -6,7 +6,7 @@
 #
 module RundeckOptions
   module Plugins
-    class Rackspace
+    class Rackspace < Plugin
       def initialize configuration
         @configuration = configuration
         @rackspace = nil
@@ -19,6 +19,13 @@ module RundeckOptions
         end
       end
       include RackspaceMethods
+
+      def networks
+        rackspace.networks.map { |x| x.label }
+      end
+
+      alias_method :floats, :unsupported
+      alias_method :floats_free, :unsupported
 
       private
       def rackspace

@@ -8,6 +8,10 @@ require 'fog'
 
 module RundeckOptions
   module Plugins
-    class Plugin; end
+    class Plugin
+      def unsupported
+        %w(unsupported)
+      end
+    end
   end
 end
