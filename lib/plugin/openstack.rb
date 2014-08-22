@@ -28,6 +28,13 @@ module RundeckOptions
         network.networks.map { |x| x.name }
       end
 
+      def computes
+        compute.list_hosts.body['hosts'].inject([]) do |a,host|
+          a << host['host_name'] if host['service'] == 'compute'
+          a
+        end
+      end
+
       def floats
         network.list_floating_ips.body['floatingips'].map { |float| float['floating_ip_address'] }
       end
