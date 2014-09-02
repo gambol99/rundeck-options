@@ -17,7 +17,7 @@ module RundeckOptions
       load_plugins
     end
 
-    [ :flavors, :floats, :floats_free, :networks, :images, :keypairs, :computes ].each do|m|
+    [ :security_groups, :flavors, :floats, :floats_free, :networks, :images, :keypairs, :computes ].each do|m|
       get "/#{m}" do
         render_list stack.send m if stack.respond_to? m
       end
