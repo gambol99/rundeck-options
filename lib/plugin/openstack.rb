@@ -20,6 +20,10 @@ module RundeckOptions
       end
       include OpenstackMethods
 
+      def security_groups
+        compute.security_groups.map { |x| x.name }
+      end
+
       def keypairs
         compute.key_pairs.map { |x| x.name }
       end

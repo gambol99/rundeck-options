@@ -20,6 +20,10 @@ module RundeckOptions
       end
       include RackspaceMethods
 
+      def security_groups
+        []
+      end
+
       def networks
         rackspace.networks.map { |x| x.label }
       end
