@@ -20,10 +20,6 @@ module RundeckOptions
       end
       include RackspaceMethods
 
-      def security_groups
-        []
-      end
-
       def networks
         rackspace.networks.map { |x| x.label }
       end
@@ -31,6 +27,8 @@ module RundeckOptions
       alias_method :floats, :unsupported
       alias_method :floats_free, :unsupported
       alias_method :keypairs, :unsupported
+      alias_method :security_groups, :unsupported
+      alias_method :computes, :unsupported
 
       private
       def rackspace
