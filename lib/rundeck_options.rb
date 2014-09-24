@@ -28,7 +28,7 @@ module RundeckOptions
       stack.servers.each do |name|
         if name =~ /\./
           domain  = name.split('.').drop(1).join('.')
-          domains[domain] = true unless domains.has_key? domain
+          domains[domain] = true if !domains.has_key?(domain) and !domain.empty?
         end
       end
       render_list domains.keys
