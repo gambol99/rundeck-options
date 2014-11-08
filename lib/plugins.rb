@@ -10,12 +10,12 @@ module RundeckOptions
     require 'plugin/openstack'
     require 'plugin/rackspace'
 
-    def plugin name, configuration = {}
+    def plugin(name, configuration = {})
       raise ArgumentError, "the plugin: #{name} does not exists" unless plugin? name
-      RundeckOptions::Plugins.const_get( name.to_sym ).new configuration
+      RundeckOptions::Plugins.const_get(name.to_sym).new configuration
     end
 
-    def plugin? name
+    def plugin?(name)
       plugins.include? name.to_sym
     end
 

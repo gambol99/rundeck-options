@@ -7,7 +7,7 @@
 module RundeckOptions
   module Plugins
     class Rackspace < Plugin
-      def initialize configuration
+      def initialize(configuration)
         @configuration = configuration
         @rackspace = nil
       end

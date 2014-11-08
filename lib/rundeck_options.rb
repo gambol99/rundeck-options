@@ -35,7 +35,7 @@ module RundeckOptions
     end
 
     get '/hostnames' do
-      domain = '[\.]?' << ( params["domain"] || '.*' )
+      domain = '[\.]?' << ( params['domain'] || '.*' )
       render_list stack.servers.select { |name|
         name if name =~ /#{domain}$/
       }.map { |name|
@@ -44,7 +44,7 @@ module RundeckOptions
     end
 
     get '/servers' do
-      domain = '[\.]?' << ( params["domain"] || '.*' )
+      domain = '[\.]?' << ( params['domain'] || '.*' )
       render_list stack.servers.select { |name|
         name if name =~ /#{domain}$/
       }
@@ -55,12 +55,12 @@ module RundeckOptions
     end
 
     private
-    def stack name = params['stack']
+    def stack(name = params['stack'])
       # step: set to the default stack if no param is set
       name = :default if name.nil?
-      halt 500, "the stack: #{name} is invalid, please check"         unless name =~ /^[[:alnum:]_]+$/
-      halt 500, "we have no cloud configuration defined in config"    if stacks.empty?
-      halt 500, "the stack: #{name} does not exist in configuration"  if stacks[name].nil?
+      halt 500, "the stack: #{name} is invalid, please check" unless name =~ /^[[:alnum:]_]+$/
+      halt 500, 'we have no cloud configuration defined in config' if stacks.empty?
+      halt 500, "the stack: #{name} does not exist in configuration" if stacks[name].nil?
       stacks[name]
     end
 
@@ -81,10 +81,10 @@ module RundeckOptions
       @stacks ||= {}
     end
 
-    def render_list list = []
+    def render_list(list = [])
       content_type :json
       list.map { |item|
-        { :name => item, :value => item }
+        {:name => item, :value => item}
       }.to_json
     end
   end

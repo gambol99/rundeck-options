@@ -1,4 +1,4 @@
-require "yaml"
+require 'yaml'
 
 module RundeckOptions
   class Settings

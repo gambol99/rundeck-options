@@ -7,7 +7,7 @@
 module RundeckOptions
   module Plugins
     class Openstack < Plugin
-      def initialize configuration
+      def initialize(configuration)
         @configuration = configuration
         @openstack = nil
       end
